@@ -4,7 +4,8 @@
 <head>
 	<title>Indian poker</title>
 	<meta charset="UTF-8">
-	<link href="style.css" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+
 	<script type="text/javascript">
 		function load(n) {
 			for (i = 1; i < n; i++) {
@@ -15,8 +16,9 @@
 			}
 
 			var card = cards.splice(Math.floor(Math.random() * cards.length), 1)
+			player_card = card
 			document.getElementById("player2").innerHTML += "<div class=\"card\" id=\"card\">" + mark[Math.floor((card - 1) / 10)] + ((card - 1) % 10 + 1) + "</div>"
-			document.getElementById("player1").innerHTML += "<div class=\"card\" id=\"card\"></div>"
+			document.getElementById("player1").innerHTML += "<div class=\"card\" id=\"card2\"></div>"
 			calculate(card, cards)
 		}
 		function points(card1, card2) {
@@ -68,6 +70,34 @@
 			//document.getElementById("left").innerHTML = "Left: " + (left / apsolute * 100).toFixed(2) + "%"
 			//document.getElementById("right").innerHTML = "Right: " + (right / apsolute * 100).toFixed(2) + "%"
 		}
+		function check() {
+			document.getElementById("show").innerHTML = ""
+
+			var card = cards.splice(Math.floor(Math.random() * cards.length), 1)
+			document.getElementById("card2").innerHTML = mark[Math.floor((card - 1) / 10)] + ((card - 1) % 10 + 1)
+			p1 = points(card, player_card)
+
+			var card = cards.splice(Math.floor(Math.random() * cards.length), 1)
+			document.getElementById("card21").innerHTML = mark[Math.floor((card - 1) / 10)] + ((card - 1) % 10 + 1)
+			p2 = points(card, opponent_cards[0])
+
+			var card = cards.splice(Math.floor(Math.random() * cards.length), 1)
+			document.getElementById("card22").innerHTML = mark[Math.floor((card - 1) / 10)] + ((card - 1) % 10 + 1)
+			p3 = points(card, opponent_cards[1])
+
+			document.getElementById("won").innerHTML = ""
+			document.getElementById("draw").innerHTML = ""
+
+			if (Math.max(p1, p2, p3) == p1) {
+				if (p1 == Math.max(p2, p3)) {
+					document.getElementById("won").innerHTML = "It's a draw!"
+					return
+				}
+				document.getElementById("won").innerHTML = "You won!"
+				return
+			}
+			document.getElementById("won").innerHTML = "You lost!"
+		}
 	</script>
 </head>
 
@@ -86,11 +116,15 @@
 
 	<p class="chance" id="won"></p>
 	<p class="chance" id="draw"></p>
+	<p id="show">
+		<input class="button" type="button" onclick="check()" value="Showdown" />
+	</p>
 	<!--<p class="chance" id="left"></p>
 	<p class="chance" id="right"></p>-->
 	<script type="text/javascript">
 		let cards = []
 		let opponent_cards = []
+		let player_card = 0
 		let mark = ["♠", "♣", "♥", "♦"]
 		for (i = 1; i <= 40; i++) {
 			cards.push(i)

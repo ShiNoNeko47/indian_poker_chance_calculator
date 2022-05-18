@@ -16,3 +16,8 @@
 .chance {
 	text-align: center;
 }
+p {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
